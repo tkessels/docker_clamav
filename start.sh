@@ -8,7 +8,7 @@ case "${1}" in
   scan )
     echo "stage: ${1}"
     echo "Starting Scan of /data:"
-    clamscan -or /data
+    clamscan -ir /data
     ;;
   * )
     echo "stage: ${1}"
