@@ -1,34 +1,19 @@
-#!/bin/bash
-function start_service() {
-  echo -n "Starting Service... "
-  /etc/init.d/kesl-supervisor start && echo "Done!" || echo "Failed!"
-}
-
+#!/bin/sh
 case "${1}" in
-  shell )
-    echo "stage: ${1}"
-    start_service
-    echo "Usage:"
-    cat /root/readme
-    /bin/bash
-    ;;
   version )
     echo "stage: ${1}"
-    start_service
-    kesl-control -S --app-info | grep -v '^$'
+    clamscan --version
+    clamconf | sed -ne '/Database information/,/^$/p'
     ;;
   scan )
     echo "stage: ${1}"
-    start_service
     echo "Starting Scan of /data:"
-    kesl-control --scan-file --action Skip /data
-    echo "Found Threats"
-    kesl-control -E --query 'EventType == "ThreatDetected"'
+    clamscan -or /data
     ;;
-  debug )
+  * )
     echo "stage: ${1}"
     echo "Usage:"
-    cat /root/readme
-    /bin/bash
+    clamscan --help | head -n 20
+    /bin/sh
     ;;
 esac

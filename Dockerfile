@@ -10,8 +10,10 @@ RUN apk add -u freshclam
 RUN freshclam
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
-
+RUN sed -ie 's/#DetectPUA yes/DetectPUA yes/p' /etc/clamav/clamd.conf
+RUN sed -ie 's/#AlertOLE2Macros yes/AlertOLE2Macros yes/p' /etc/clamav/clamd.conf
 RUN addgroup -g ${PGID} user && \
     adduser -D -u ${PUID} -G user user
-
+ENTRYPOINT ["/start.sh"]
+CMD ["shell"]
 USER user
