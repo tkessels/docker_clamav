@@ -8,12 +8,17 @@ RUN apk add -u clamav
 RUN apk add -u clamav-dev
 RUN apk add -u freshclam
 RUN apk add -u bash
-#update clamav signatures
+#ADD unofficial signatures to freshclam
+RUN echo 'DatabaseCustomURL https://urlhaus.abuse.ch/downloads/urlhaus.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://mirror.rollernet.us/sanesecurity/badmacro.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://mirror.rollernet.us/sanesecurity/blurl.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://mirror.rollernet.us/sanesecurity/junk.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://mirror.rollernet.us/sanesecurity/jurlbl.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://mirror.rollernet.us/sanesecurity/lott.ndb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://raw.githubusercontent.com/twinwave-security/twinclams/master/twinclams.ldb' >> /etc/clamav/freshclam.conf
+RUN echo 'DatabaseCustomURL https://raw.githubusercontent.com/twinwave-security/twinclams/master/twinwave.ign2' >> /etc/clamav/freshclam.conf
+#RUN freshclam
 RUN freshclam
-#add abuse.ch signatures
-ADD https://urlhaus.abuse.ch/downloads/urlhaus.ndb /var/lib/clamav/urlhaus.ndb
-RUN chown clamav:clamav /var/lib/clamav/urlhaus.ndb
-RUN chmod 644 /var/lib/clamav/urlhaus.ndb
 #add startscript
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
