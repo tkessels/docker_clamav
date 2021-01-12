@@ -25,6 +25,9 @@ RUN chmod +x /start.sh
 #customize clamav config
 RUN sed -ie 's/#DetectPUA yes/DetectPUA yes/p' /etc/clamav/clamd.conf
 RUN sed -ie 's/#AlertOLE2Macros yes/AlertOLE2Macros yes/p' /etc/clamav/clamd.conf
+#make freshclam suid so user can run it
+RUN chown root /usr/bin/freshclam
+RUN chmod u+s /usr/bin/freshclam
 #add user
 RUN addgroup -g ${PGID} user && \
     adduser -D -u ${PUID} -G user user
